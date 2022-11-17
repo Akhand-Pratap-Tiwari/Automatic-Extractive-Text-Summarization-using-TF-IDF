@@ -1,5 +1,3 @@
-write a documentation about Automatic Extractive Text Summarization using TF-IDF
-
 Automatic extractive text summarization is the process of automatically creating a summary of a text document using algorithms. The most common algorithm used for this task is TF-IDF.
 
 TF-IDF is a statistical measure that is used to evaluate how important a word is to a document. The importance of a word is determined by how often it appears in the document, and how often it appears in other documents.
