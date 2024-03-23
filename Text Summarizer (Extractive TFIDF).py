@@ -1,14 +1,29 @@
 #Text Summarizer | Type = Extractive
 #Using Term Frequency - Inverse Document Frequency Technique
 
-from nltk import warnings
-from sklearn.feature_extraction.text import TfidfVectorizer
+# from nltk import warnings
 import string
-from nltk.corpus import stopwords
 import nltk
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    print('punkt')
+    nltk.download('punkt')
+
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    print('stopwords')
+    nltk.download('stopwords')
+
+
+try:
+    nltk.data.find('corpora/wordnet')
+except LookupError:
+    nltk.download('wordnet')
 
 def remove_punctuation_marks(text):
     punctuation_marks = dict((ord(punctuation_mark), None)
@@ -58,18 +73,7 @@ def summary_func(text="", handicap=0.9):
 
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore")
-
-    try:
-        nltk.data.find('tokenizers/punkt')
-    except LookupError:
-        print('punkt')
-        nltk.download('punkt')
-
-    try:
-        nltk.data.find('corpora/wordnet')
-    except LookupError:
-        nltk.download('wordnet')
+    # warnings.filterwarnings("ignore")
 
     text = '''This product is good for students for Study You can not play heavy gamesike GTA 5 on this laptop.
               Nice product. good for students but can improve in screen resolution.
@@ -84,8 +88,7 @@ if __name__ == "__main__":
               Expecting a response at the earliest. Just Go For It Dont Think. The best laptop for students.'''
 
     documents = nltk.sent_tokenize(text)
-
-    tfidf_results = TfidfVectorizer(tokenizer=get_lemmatized_tokens, stop_words=stopwords.words(
-        'english')).fit_transform(documents)
+    stop_words_list = stopwords.words('english').extend([get_lemmatized_tokens(i) for i in stopwords.words('english')]) 
+    tfidf_results = TfidfVectorizer(tokenizer=get_lemmatized_tokens, stop_words=stopwords.words(stop_words_list)).fit_transform(documents)
     print(get_summary(documents, tfidf_results, 0.9))   #Handicap Parameter = 0.9
                                                         #Length of Summarized text is inversely prop. to Handicap  
